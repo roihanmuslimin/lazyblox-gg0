@@ -1,11 +1,15 @@
 const express = require('express');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
+const path = require('path');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.post('/submit', (req, res) => {
     const username = req.body.username;
@@ -25,4 +29,3 @@ app.post('/submit', (req, res) => {
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
-      
