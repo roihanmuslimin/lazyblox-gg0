@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Form</title>
+</head>
+<body>
+    <h1>Input Form</h1>
+    <form id="inputForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <button type="submit">Submit</button>
+    </form>
+    <h2>Table</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>UID</th>
+            </tr>
+        </thead>
+        <tbody id="dataTable">
+        </tbody>
+    </table>
+    <script>
+        document.getElementById('inputForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const response = await fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username })
+            });
+            const result = await response.json();
+            const table = document.getElementById('dataTable');
+            const row = table.insertRow();
+            row.insertCell(0).innerText = result.username;
+            row.insertCell(1).innerText = result.uid;
+        });
+    </script>
+</body>
+</html>
