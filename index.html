@@ -24,9 +24,10 @@
         </tbody>
     </table>
     <script>
-        document.getElementById('inputForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
+    document.getElementById('inputForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        try {
             const response = await fetch('/submit', {
                 method: 'POST',
                 headers: {
@@ -34,12 +35,19 @@
                 },
                 body: JSON.stringify({ username })
             });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             const result = await response.json();
             const table = document.getElementById('dataTable');
             const row = table.insertRow();
             row.insertCell(0).innerText = result.username;
             row.insertCell(1).innerText = result.uid;
-        });
-    </script>
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    });
+                </script>
+    
 </body>
 </html>
